@@ -143,7 +143,7 @@ let pointerStart=null;
 arena.addEventListener("pointerdown",e=>{if(!running||paused)return;pointerStart={x:e.clientX,y:e.clientY,id:e.pointerId};try{arena.setPointerCapture(e.pointerId)}catch(err){}});
 arena.addEventListener("pointerup",e=>{if(!running||paused||!pointerStart)return;const dy=e.clientY-pointerStart.y,dx=e.clientX-pointerStart.x;pointerStart=null;if(Math.abs(dy)>=10&&Math.abs(dy)>Math.abs(dx)*0.65)move(dy<0?-1:1)});
 arena.addEventListener("pointercancel",()=>pointerStart=null);
-window.addEventListener("keydown",e=>{if(["ArrowUp","ArrowDown","w","W","s","S"].includes(e.key)){e.preventDefault();move(e.key==="ArrowUp"||e.key==="w"||e.key==="W"?-1:1)}if(e.key===" "){e.preventDefault();if(!running&&!paused)startGame();else pauseGame()}});
+window.addEventListener("keydown",e=>{const target=e.target;const typing=target instanceof HTMLElement&&(target.isContentEditable||["INPUT","TEXTAREA","SELECT"].includes(target.tagName));if(typing)return;if(["ArrowUp","ArrowDown","w","W","s","S"].includes(e.key)){e.preventDefault();move(e.key==="ArrowUp"||e.key==="w"||e.key==="W"?-1:1)}if(e.key===" "){e.preventDefault();if(!running&&!paused)startGame();else pauseGame()}});
 
 let matchStartedAt=0,matchTimer=null,matchPoll=null,matchRoomId=null,quickGameStarted=false,quickSubmitted=false,quickFinished=false;
 function stopMatch(){if(matchTimer){clearInterval(matchTimer);matchTimer=null}}
