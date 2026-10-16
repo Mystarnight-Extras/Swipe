@@ -42,7 +42,7 @@ html,body{min-height:100%;width:100%;margin:0}
 .menu-screen{min-height:calc(100dvh - 44px);display:flex;flex-direction:column;justify-content:center;align-items:center}
 .layout.view-game{position:fixed;inset:0;width:100vw;height:100dvh;padding:0;margin:0;z-index:1000;display:block!important;overflow:hidden}
 .layout.view-game>main{width:100%;height:100%;min-height:0;border:0;border-radius:0;padding:calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 10px);gap:8px}
-.layout.view-game .arena{flex:1;min-height:0;height:auto;border-radius:0;touch-action:pan-y}
+.layout.view-game .arena{flex:1;min-height:0;height:auto;border-radius:0;touch-action:none}
 .layout.view-game>aside,.layout.view-game~.foot{display:none!important}
 .layout.view-account,.layout.view-leaderboard{display:block!important;position:fixed;inset:0;overflow:auto;width:100vw;height:100dvh;margin:0;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom);z-index:900;background:#0c1018}
 .layout.view-account>main,.layout.view-leaderboard>main{display:none!important}
@@ -141,7 +141,7 @@ function pauseGame(){if(running){running=false;paused=true;cancelAnimationFrame(
 function move(direction){if(running&&!paused){setLane(direction===undefined?1-lane:(direction<0?0:1));centerSince=0}}
 let pointerStart=null;
 arena.addEventListener("pointerdown",e=>{if(!running||paused)return;pointerStart={x:e.clientX,y:e.clientY,id:e.pointerId};try{arena.setPointerCapture(e.pointerId)}catch(err){}});
-arena.addEventListener("pointerup",e=>{if(!running||paused||!pointerStart)return;const dy=e.clientY-pointerStart.y,dx=e.clientX-pointerStart.x;pointerStart=null;if(Math.abs(dy)>=18&&Math.abs(dy)>Math.abs(dx)*0.8)move(dy<0?-1:1)});
+arena.addEventListener("pointerup",e=>{if(!running||paused||!pointerStart)return;const dy=e.clientY-pointerStart.y,dx=e.clientX-pointerStart.x;pointerStart=null;if(Math.abs(dy)>=10&&Math.abs(dy)>Math.abs(dx)*0.65)move(dy<0?-1:1)});
 arena.addEventListener("pointercancel",()=>pointerStart=null);
 window.addEventListener("keydown",e=>{if(["ArrowUp","ArrowDown","w","W","s","S"].includes(e.key)){e.preventDefault();move(e.key==="ArrowUp"||e.key==="w"||e.key==="W"?-1:1)}if(e.key===" "){e.preventDefault();if(!running&&!paused)startGame();else pauseGame()}});
 
