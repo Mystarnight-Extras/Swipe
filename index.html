@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/svg+xml" href="./favicon.svg?v=1">
-<link rel="icon" type="image/jpeg" href="./IMG_2287.jpeg?v=4">
-<link rel="shortcut icon" type="image/jpeg" href="./IMG_2287.jpeg?v=4">
-<link rel="apple-touch-icon" href="./IMG_2287.jpeg?v=4">
+<link rel="icon" type="image/svg+xml" sizes="any" href="./favicon.svg?v=20261016-2">
+<link rel="icon" type="image/jpeg" href="./IMG_2287.jpeg?v=20261016-2">
+<link rel="shortcut icon" href="./favicon.svg?v=20261016-2">
+<link rel="apple-touch-icon" href="./IMG_2287.jpeg?v=20261016-2">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#10131b">
@@ -197,7 +197,27 @@ const exist=await db.from("swipe_friend_requests").select("id,status,requester_i
 let buttons=[];if(exist.data?.status==="accepted")buttons=[{label:"Already friends",disabled:true}];else if(exist.data?.status==="pending")buttons=[{label:exist.data.requester_id===user.id?"Request sent":"Check incoming requests",disabled:true}];else buttons=[{label:"Send friend request",primary:true,action:async()=>{const r=await db.from("swipe_friend_requests").insert({requester_id:user.id,recipient_id:p.id});if(r.error)socialMsg(r.error.code==="23505"?"A request already exists between these players.":r.error.message,"error");else{socialMsg("Friend request sent to "+p.username+".","good");refreshSocial();$("searchFriend").click()}}}];
 box.append(socialRow(p.username,buttons,p.avatar_color,p.avatar_shape))});
 async function sendScore(){if(!user||!profile||score===submitted)return;submitted=score;const {error}=await db.from("swipe_scores").insert({player_name:profile.username,score,mode,difficulty:mode==="bot"?difficulty:null,user_id:user.id});if(error){msg("boardMessage","Score not submitted: "+error.message,"error");submitted=-1}else{msg("boardMessage","Score submitted!","good");await loadBoard()}}
-async function loadBoard(){const holder=$("leaderboard");holder.replaceChildren();const loading=document.createElement("div");loading.className="empty";loading.textContent="Loading scores…";holder.append(loading);let q=db.from("swipe_scores").select("player_name,score,mode,difficulty,created_at").order("score",{ascending:false}).limit(30);if(boardMode!=="all")q=q.eq("mode",boardMode);const {data,error}=await q;if(error){holder.replaceChildren();const e=document.createElement("div");e.className="empty";e.textContent="Leaderboard unavailable. Check Supabase table permissions.";holder.append(e);msg("boardMessage",error.message,"error");return}holder.replaceChildren();if(!data?.length){const e=document.createElement("div");e.className="empty";e.textContent="No scores yet. Be the first!";holder.append(e);return}data.forEach((s,i)=>{const row=document.createElement("div");row.className="leader-row";const rank=document.createElement("div");rank.className="rank";rank.textContent="#"+(i+1);const middle=document.createElement("div");const name=document.createElement("div");name.className="pname";name.textContent=s.player_name;const sub=document.createElement("div");sub.className="sub";sub.textContent=s.mode==="bot"?"Bot Play · "+(s.difficulty||"Normal"):s.mode==="quick"?"Quick Play":"Practice";middle.append(name,sub);const points=document.createElement("div");points.className="lscore";points.textContent=s.score;row.append(rank,middle,points);holder.append(row)})}
+async function loadBoard(){
+const holder=$("leaderboard");holder.replaceChildren();
+const loading=document.createElement("div");loading.className="empty";loading.textContent="Loading scores…";holder.append(loading);
+let q=db.from("swipe_scores").select("player_name,score,mode,difficulty,created_at").order("score",{ascending:false}).limit(1000);
+if(boardMode!=="all")q=q.eq("mode",boardMode);
+const {data,error}=await q;
+if(error){holder.replaceChildren();const e=document.createElement("div");e.className="empty";e.textContent="Leaderboard unavailable. Check Supabase table permissions.";holder.append(e);msg("boardMessage",error.message,"error");return}
+const bestByPlayerMode=new Map();
+for(const row of (data||[])){
+const player=String(row.player_name||"Player").trim();
+const type=String(row.mode||"practice").toLowerCase();
+const key=player.toLowerCase()+"::"+type;
+const old=bestByPlayerMode.get(key);
+if(!old||Number(row.score)>Number(old.score))bestByPlayerMode.set(key,row);
+}
+const top=[...bestByPlayerMode.values()].sort((a,b)=>Number(b.score)-Number(a.score)||String(a.player_name).localeCompare(String(b.player_name))).slice(0,20);
+holder.replaceChildren();
+if(!top.length){const e=document.createElement("div");e.className="empty";e.textContent="No scores yet. Be the first!";holder.append(e);return}
+top.forEach((entry,i)=>{const row=document.createElement("div");row.className="leader-row";const rank=document.createElement("div");rank.className="rank";rank.textContent="#"+(i+1);const middle=document.createElement("div");const name=document.createElement("div");name.className="pname";name.textContent=entry.player_name;const sub=document.createElement("div");sub.className="sub";sub.textContent=entry.mode==="bot"?"Bot Play · "+(entry.difficulty||"Normal"):entry.mode==="quick"?"Quick Play":"Practice";middle.append(name,sub);const points=document.createElement("div");points.className="lscore";points.textContent=entry.score;row.append(rank,middle,points);holder.append(row)});
+msg("boardMessage","Showing the top "+top.length+" personal bests per game type.","good")
+}
 document.querySelectorAll("[data-board]").forEach(b=>b.addEventListener("click",()=>{boardMode=b.dataset.board;document.querySelectorAll("[data-board]").forEach(x=>x.classList.toggle("active",x===b));loadBoard()}));$("refresh").addEventListener("click",loadBoard);
 db.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){showScreen("account");$("recoveryForm").classList.remove("hidden");msg("authMessage","Choose a new password below.","good")}setTimeout(()=>syncAccount(),0)});
 showScreen("menu");syncAccount().catch(e=>{msg("authMessage","Supabase connection failed: "+e.message,"error");loadBoard()});
