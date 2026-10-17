@@ -220,6 +220,7 @@ top.forEach((entry,i)=>{const row=document.createElement("div");row.className="l
 msg("boardMessage","Showing the top "+top.length+" personal bests per game type.","good")
 }
 document.querySelectorAll("[data-board]").forEach(b=>b.addEventListener("click",()=>{boardMode=b.dataset.board;document.querySelectorAll("[data-board]").forEach(x=>x.classList.toggle("active",x===b));loadBoard()}));$("refresh").addEventListener("click",loadBoard);
+setInterval(()=>{if(user&&profile&&screen==="friends")refreshSocial()},3000);
 db.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){showScreen("account");$("recoveryForm").classList.remove("hidden");msg("authMessage","Choose a new password below.","good")}setTimeout(()=>syncAccount(),0)});
 showScreen("menu");syncAccount().catch(e=>{msg("authMessage","Supabase connection failed: "+e.message,"error");loadBoard()});
 })();
