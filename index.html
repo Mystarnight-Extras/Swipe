@@ -147,7 +147,7 @@ arena.addEventListener("pointerup",e=>{if(!running||paused||!pointerStart)return
 arena.addEventListener("pointercancel",()=>pointerStart=null);
 window.addEventListener("keydown",e=>{const target=e.target;const typing=target instanceof HTMLElement&&(target.isContentEditable||["INPUT","TEXTAREA","SELECT"].includes(target.tagName));if(typing)return;if(["ArrowUp","ArrowDown","w","W","s","S"].includes(e.key)){e.preventDefault();move(e.key==="ArrowUp"||e.key==="w"||e.key==="W"?-1:1)}if(e.key===" "){e.preventDefault();if(!running&&!paused)startGame();else pauseGame()}});
 
-let matchStartedAt=0,matchTimer=null,matchPoll=null,matchRoomId=null,quickGameStarted=false,quickSubmitted=false,quickFinished=false;
+let matchStartedAt=0,matchTimer=null,matchPoll=null,matchRoomId=null,quickGameStarted=false,quickSubmitted=false,quickFinished=false,challengeAutoJoining=false,lastAutoChallengeRoom=null,lastChallengeCheck=0;
 function stopMatch(){if(matchTimer){clearInterval(matchTimer);matchTimer=null}}
 function stopMatchPoll(){if(matchPoll){clearInterval(matchPoll);matchPoll=null}}
 async function cancelQuickMatch(){stopMatch();stopMatchPoll();if(matchRoomId){try{await db.rpc("swipe_leave_match",{p_room_id:matchRoomId})}catch(e){}}matchRoomId=null;quickGameStarted=false;quickSubmitted=false;quickFinished=false;showScreen("menu")}
@@ -220,7 +220,8 @@ top.forEach((entry,i)=>{const row=document.createElement("div");row.className="l
 msg("boardMessage","Showing the top "+top.length+" personal bests per game type.","good")
 }
 document.querySelectorAll("[data-board]").forEach(b=>b.addEventListener("click",()=>{boardMode=b.dataset.board;document.querySelectorAll("[data-board]").forEach(x=>x.classList.toggle("active",x===b));loadBoard()}));$("refresh").addEventListener("click",loadBoard);
-setInterval(()=>{if(user&&profile&&screen==="friends")refreshSocial()},3000);
+async function checkAcceptedChallenge(){if(!user||!profile||challengeAutoJoining)return;const now=Date.now();if(now-lastChallengeCheck<850)return;lastChallengeCheck=now;try{await db.rpc("swipe_cleanup_challenges");const {data,error}=await db.from("swipe_challenges").select("id,room_id,status,updated_at").or("challenger_id.eq."+user.id+",challenged_id.eq."+user.id).eq("status","accepted").not("room_id","is",null).order("updated_at",{ascending:false}).limit(1);if(error||!data?.length)return;const c=data[0];if(!c.room_id||c.room_id===matchRoomId||c.room_id===lastAutoChallengeRoom||quickFinished)return;challengeAutoJoining=true;lastAutoChallengeRoom=c.room_id;await joinChallengeMatch(c.room_id)}catch(e){console.warn("Challenge check failed",e)}finally{challengeAutoJoining=false}}
+setInterval(()=>{if(user&&profile){checkAcceptedChallenge();if(screen==="friends")refreshSocial()}},1000);
 db.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"){showScreen("account");$("recoveryForm").classList.remove("hidden");msg("authMessage","Choose a new password below.","good")}setTimeout(()=>syncAccount(),0)});
 showScreen("menu");syncAccount().catch(e=>{msg("authMessage","Supabase connection failed: "+e.message,"error");loadBoard()});
 })();
