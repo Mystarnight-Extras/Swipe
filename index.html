@@ -270,8 +270,36 @@ syncAccount().catch(e=>{msg("authMessage","Supabase connection failed: "+e.messa
 </script>
 <script>
 (function(){
-  function boot(){if(window.__swiperBooted||!window.supabase||!window.__bootSwiper)return;window.__swiperBooted=true;try{window.__bootSwiper()}catch(e){console.error("Swiper startup failed:",e);const l=document.getElementById("swiperLoading");if(l){l.innerHTML="<div style=\"text-align:center;color:white;padding:24px\"><h1>SWIPER</h1><p>Could not start. Please refresh the page.</p></div>";l.classList.remove("fade-out")}}}
-  function loadFallback(){if(window.supabase){boot();return}const fallback=document.createElement("script");fallback.src="https://unpkg.com/@supabase/supabase-js@2";fallback.onload=boot;fallback.onerror=function(){const l=document.getElementById("swiperLoading");if(l){l.innerHTML="<div style=\"text-align:center;color:white;padding:24px\"><h1>SWIPER</h1><p>Connection library failed to load. Check your internet and refresh.</p></div>"}};document.head.appendChild(fallback)}
-  const primary=document.createElement("script");primary.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";primary.onload=boot;primary.onerror=loadFallback;document.head.appendChild(primary);
+  function showStartupError(code, title, detail){
+    console.error("[Swiper "+code+"] "+title, detail||"");
+    const l=document.getElementById("swiperLoading"); if(!l)return;
+    l.classList.remove("fade-out"); l.replaceChildren();
+    const box=document.createElement("div");box.style.cssText="max-width:560px;text-align:center;color:white;padding:28px;font-family:system-ui,sans-serif";
+    const brand=document.createElement("h1");brand.textContent="SWIPER";brand.style.letterSpacing=".2em";
+    const heading=document.createElement("h2");heading.textContent=title;
+    const codeLine=document.createElement("p");codeLine.textContent="Error code: "+code;codeLine.style.cssText="font-weight:800;background:#ffffff20;border:1px solid #ffffff55;border-radius:8px;padding:10px";
+    const detailLine=document.createElement("p");detailLine.textContent=String(detail||"No additional details were provided.").slice(0,500);detailLine.style.cssText="overflow-wrap:anywhere;color:#ffe3e8";
+    const instruction=document.createElement("p");instruction.textContent="Tell ChatGPT the error code and message shown here.";
+    const retry=document.createElement("button");retry.textContent="Try again";retry.style.cssText="margin-top:12px;padding:12px 20px;border:0;border-radius:9px;background:white;color:#8f1026;font-weight:800";retry.onclick=()=>location.reload();
+    box.append(brand,heading,codeLine,detailLine,instruction,retry);l.append(box);
+  }
+  window.addEventListener("error",function(e){if(!window.__swiperBooted)return;showStartupError("SWP-JS-001","A JavaScript error occurred",(e.message||"Unknown script error")+" (line "+(e.lineno||"?")+")")});
+  window.addEventListener("unhandledrejection",function(e){if(!window.__swiperBooted)return;const r=e.reason;showStartupError("SWP-ASYNC-001","An app task failed",r&&r.message?r.message:String(r||"Unknown rejected task"))});
+  function boot(){
+    if(window.__swiperBooted||!window.supabase||!window.__bootSwiper)return;
+    window.__swiperBooted=true;
+    try{window.__bootSwiper()}
+    catch(e){showStartupError("SWP-BOOT-001","Swiper could not start",((e&&e.name)?e.name+": ":"")+(e&&e.message?e.message:String(e)))}
+  }
+  function loadFallback(){
+    if(window.supabase){boot();return}
+    const fallback=document.createElement("script");fallback.src="https://unpkg.com/@supabase/supabase-js@2";
+    fallback.onload=boot;
+    fallback.onerror=function(){showStartupError("SWP-NET-002","Could not load the app library","Both Supabase library sources failed. Check your internet connection or content blocker, then tell ChatGPT: SWP-NET-002.")};
+    document.head.appendChild(fallback)
+  }
+  const primary=document.createElement("script");primary.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+  primary.onload=boot;primary.onerror=loadFallback;document.head.appendChild(primary);
+  setTimeout(function(){if(!window.__swiperBooted&&!window.supabase)showStartupError("SWP-NET-001","App library is taking too long","The Supabase library did not load within 12 seconds. Check your connection and report SWP-NET-001.")},12000);
 })();
 </script></body></html>
