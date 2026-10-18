@@ -206,7 +206,7 @@ $("useAttackButton").addEventListener("click",async()=>{if(!matchRoomId||!pendin
 function move(direction){if(running&&!paused){setLane(direction===undefined?1-lane:(direction<0?0:1));centerSince=0}}
 let pointerStart=null;
 arena.addEventListener("pointerdown",e=>{if(!running||paused)return;pointerStart={x:e.clientX,y:e.clientY,id:e.pointerId};try{arena.setPointerCapture(e.pointerId)}catch(err){}});
-arena.addEventListener("pointerup",e=>{if(!running||paused||!pointerStart)return;const dy=e.clientY-pointerStart.y,dx=e.clientX-pointerStart.x;pointerStart=null;if(Math.abs(dy)>=10&&Math.abs(dy)>Math.abs(dx)*0.65)move(dy<0?-1:1);else move()});document.addEventListener("click",e=>{if(screen!=="game"||!running||paused||arena.contains(e.target))return;if(e.target.closest("button,a,input,textarea,select,[role=button]"))return;move()});
+arena.addEventListener("pointerup",e=>{if(!running||paused||!pointerStart)return;const dy=e.clientY-pointerStart.y,dx=e.clientX-pointerStart.x;pointerStart=null;if(Math.abs(dy)>=18&&Math.abs(dy)>Math.abs(dx)*0.8)move(dy<0?-1:1)});
 arena.addEventListener("pointercancel",()=>pointerStart=null);
 window.addEventListener("keydown",e=>{const target=e.target;const typing=target instanceof HTMLElement&&(target.isContentEditable||["INPUT","TEXTAREA","SELECT"].includes(target.tagName));if(typing)return;if(["ArrowUp","ArrowDown","w","W","s","S"].includes(e.key)){e.preventDefault();move(e.key==="ArrowUp"||e.key==="w"||e.key==="W"?-1:1)}if(e.key===" "){e.preventDefault();if(!running&&!paused)startGame();else pauseGame()}});
 
