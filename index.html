@@ -157,6 +157,27 @@ body.screen-menu .wrap>header,body.screen-menu .wrap>.layout,body.screen-menu .w
 .layout.view-game .arena{touch-action:none}
 body.guest-mode #menuFriends{display:none!important}
 body.guest-mode #communityEditTab,body.guest-mode #communityEditor,body.guest-mode #publishLevel{display:none!important}
+
+/* Final screen isolation fix: every sidebar panel is hidden unless its own screen is active. */
+.layout:not(.view-account) #accountPanel,
+.layout:not(.view-avatar) #avatarPanel,
+.layout:not(.view-friends) #friendsPage,
+.layout:not(.view-leaderboard) #leaderPanel,
+.layout:not(.view-community) #communityPanel,
+.layout:not(.view-settings) #settingsPanel,
+.layout:not(.view-shop) #shopPanel,
+.layout:not(.view-song) #songPanel{display:none!important}
+.layout.view-account #accountPanel,
+.layout.view-avatar #avatarPanel,
+.layout.view-friends #friendsPage,
+.layout.view-leaderboard #leaderPanel,
+.layout.view-community #communityPanel,
+.layout.view-settings #settingsPanel,
+.layout.view-shop #shopPanel,
+.layout.view-song #songPanel{display:block!important}
+.layout.view-account #friendsPanel{display:none!important}
+.layout.view-game>aside{display:none!important}
+body.screen-menu .layout{display:none!important}
 </style>
 </head>
 <body>
