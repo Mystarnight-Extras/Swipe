@@ -178,6 +178,19 @@ body.guest-mode #communityEditTab,body.guest-mode #communityEditor,body.guest-mo
 .layout.view-account #friendsPanel{display:none!important}
 .layout.view-game>aside{display:none!important}
 body.screen-menu .layout{display:none!important}
+
+/* Practice/gameplay must show only the current arena, never the old menu shell. */
+body.playing-fullscreen{margin:0!important;overflow:hidden!important;height:100dvh!important;min-height:100dvh!important}
+body.playing-fullscreen .wrap{width:100%!important;max-width:none!important;height:100dvh!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
+body.playing-fullscreen .wrap>header,
+body.playing-fullscreen #mainMenu,
+body.playing-fullscreen #matchScreen,
+body.playing-fullscreen .wrap>.foot,
+body.playing-fullscreen .layout>aside{display:none!important}
+body.playing-fullscreen .layout.view-game{display:block!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;padding:0!important;overflow:hidden!important;z-index:2147483000!important;background:#06171d!important}
+body.playing-fullscreen .layout.view-game>main{display:flex!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;min-height:0!important;margin:0!important;border:0!important;border-radius:0!important;overflow:hidden!important}
+body.playing-fullscreen .layout.view-game .game-controls,
+body.playing-fullscreen .layout.view-game .hint{display:none!important}
 </style>
 </head>
 <body>
