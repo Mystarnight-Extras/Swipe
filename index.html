@@ -422,7 +422,7 @@ function playCommunityLevel(level){const stored=level.pattern;const arenaVideo=$
 setInterval(()=>{if(user&&profile){checkAcceptedChallenge();if(screen==="friends")refreshSocial()}},60000);
 db.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY"&&!swiperBanLock){showScreen("account");$("recoveryForm").classList.remove("hidden");msg("authMessage","Choose a new password below.","good")}setTimeout(()=>syncAccount(),0)});
 showScreen("menu");
-const loadingEl=$("swiperLoading"),loadingDots=$("loadingDots");const loadingFrames=[""," ."," .."," …",""];let loadingFrame=0;const loadingTimer=setInterval(()=>{if(!loadingDots){clearInterval(loadingTimer);return}loadingDots.textContent=loadingFrames[loadingFrame++];if(loadingFrame>=loadingFrames.length){clearInterval(loadingTimer);setTimeout(()=>{loadingEl?.classList.add("fade-out");setTimeout(()=>loadingEl?.remove(),750)},180)}},520);
+const loadingEl=$("swiperLoading");setTimeout(()=>{loadingEl?.classList.add("fade-out");setTimeout(()=>loadingEl?.remove(),750)},5000);
 syncAccount().catch(e=>{msg("authMessage","Supabase connection failed: "+e.message,"error");loadBoard()});
 })();
 };
