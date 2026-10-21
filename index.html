@@ -226,10 +226,6 @@ html body,html body *{font-family:"Fredoka",sans-serif!important}
 .layout.view-messages #friendsPage{display:none!important}
 .messages-area{max-width:900px;margin:0 auto;padding:clamp(14px,3vw,28px)}
 #voiceDock{position:fixed;z-index:99999;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:8px;width:max-content;max-width:calc(100vw - 24px);padding:9px 11px;border:1px solid #4bd9c5;border-radius:15px;background:#10232ef2;color:#effffb;box-shadow:0 12px 36px #0007;backdrop-filter:blur(14px)}#voiceDock[hidden]{display:none!important}#voiceDockStatus{font-size:12px;font-weight:700;max-width:38vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#voiceDock button{min-height:34px;padding:7px 10px;font-size:12px}
-.messages-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:clamp(22px,4vw,34px);border-radius:22px;background:radial-gradient(circle at 85% 15%,#36d9bd3d,transparent 35%),linear-gradient(135deg,#102f3d,#10202d 70%);border:1px solid #36d9bd38;margin-bottom:20px}
-.messages-hero h2{font-size:clamp(28px,5vw,40px);line-height:1.05;margin:5px 0 8px;letter-spacing:-1px}
-.messages-hero p{margin:0;color:#b7d3d8;max-width:480px}
-.messages-eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:#67e9ce}
 .messages-hero-mark{display:grid;place-items:center;width:64px;height:64px;flex:0 0 64px;border-radius:20px;background:#5ce5ca1a;border:1px solid #5ce5ca4a;color:#72f0d5;font-size:30px}
 .message-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 18px;padding:6px;border-radius:15px;background:var(--surface2);border:1px solid var(--line)}
 .message-tab{min-width:0;padding:12px 8px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--muted);font-size:13px;font-weight:700;line-height:1.25}
@@ -249,7 +245,10 @@ html body,html body *{font-family:"Fredoka",sans-serif!important}
 .messages-area #chatRoom{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
 .messages-area #chatMessages{gap:8px;margin:12px 0}
 .messages-area .voice-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px;border-radius:13px;background:var(--surface2);margin-top:12px}
-@media(max-width:520px){.messages-hero{padding:20px}.messages-hero-mark{width:48px;height:48px;flex-basis:48px;border-radius:15px;font-size:24px}.message-tabs{gap:4px;padding:4px}.message-tab{font-size:11px;padding:11px 4px}.message-section-head{align-items:stretch}.message-section-head>div{width:100%}.message-section-head button{width:100%}}
+@media(max-width:520px){.messages-hero-mark{width:48px;height:48px;flex-basis:48px;border-radius:15px;font-size:24px}.message-tabs{gap:4px;padding:4px}.message-tab{font-size:11px;padding:11px 4px}.message-section-head{align-items:stretch}.message-section-head>div{width:100%}.message-section-head button{width:100%}}
+
+/* Keep the removed inbox banner hidden even if stale markup is cached. */
+#messagesPage .messages-hero,#messagesPage .messages-eyebrow,#messagesPage .messages-hero-mark{display:none!important}
 </style>
 </head>
 <body>
