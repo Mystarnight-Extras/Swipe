@@ -216,10 +216,9 @@ html,body,body[data-theme]{background:#10131b!important;background-image:none!im
 .online-counter{background:#202735!important;color:#f4f7ff!important}
 body[data-theme="light"] .panel,body[data-theme="light"] .game-card,body[data-theme="light"] .settings-card,body[data-theme="light"] .level-card,body[data-theme="light"] .friend-card,body[data-theme="light"] .modal-card{background:#151b27!important;color:#f4f7ff!important;border-color:#2b3547!important}
 
-/* Use only Fredoka for normal text, Luckiest Guy for headings/buttons, and Quicksand for player name tags. */
-*{font-family:"Fredoka",sans-serif!important}
-h1,h2,h3,h4,button,.primary,.secondary,.menu-logo,.eyebrow,.sectionhead,.nav-back{font-family:"Luckiest Guy",cursive!important}
-.layout.view-game .runner:before{font-family:"Quicksand",sans-serif!important}
+/* Every website text element uses Fredoka. Only player name tags use the Sandbox font. */
+html body,html body *{font-family:"Fredoka",sans-serif!important}
+.layout.view-game .runner:before{font-family:"Sandbox",sans-serif!important}
 </style>
 </head>
 <body>
