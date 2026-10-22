@@ -2,7 +2,7 @@
 
 A fast, mobile-friendly spike-dodging arcade game. Swipe up and down to switch lanes, beat your best score, challenge the bot, and create or play community-made levels.
 
-## Features
+### Features
 
 - Practice, bot, and quick-play modes
 - First-time gameplay tutorial with replay in Settings
