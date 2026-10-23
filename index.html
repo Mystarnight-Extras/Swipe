@@ -258,6 +258,23 @@ html body,html body *{font-family:"Fredoka",sans-serif!important}
 .tournament-hud{position:absolute;z-index:18;left:12px;top:58px;max-width:min(280px,62vw);padding:10px 12px;border-radius:12px;border:1px solid #7c8798;background:#111827ed;color:#fff;font-size:12px;pointer-events:auto}.tournament-hud strong{display:block;margin-bottom:5px}.tournament-hud .out{color:#ff7a83}.tournament-hud .winner{color:#8af0bb;font-weight:900}.tournament-hud .alive{color:#dce5f5}.tournament-hud.hidden{display:none!important}
 
 .chat-media-actions{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 12px}.chat-media-actions button{flex:1;min-width:95px}.chat-gif-picker{border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:12px;margin:10px 0 14px}.chat-gif-picker.hidden{display:none!important}.chat-gif-head,.chat-gif-search{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:9px}.chat-gif-search input{flex:1;min-width:0;background:#0d121b;border:1px solid #303c50;border-radius:10px;color:var(--text);padding:10px}.chat-gif-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:300px;overflow:auto}.chat-gif-item{padding:4px!important;background:#0b1119;border:1px solid var(--line);min-width:0}.chat-gif-item img{display:block;width:100%;height:94px;object-fit:cover;border-radius:7px}.chat-gif-results .small{grid-column:1/-1}.chat-message-media{display:block;max-width:min(100%,320px);max-height:260px;object-fit:contain;border-radius:10px;margin-top:5px;background:#0b1119}.chat-media-attribution{font-size:10px;color:var(--muted);margin-top:4px}.chat-call-participants{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.chat-call-participants audio{width:1px;height:1px;opacity:.01;position:absolute;pointer-events:none}
+
+/* Boulder horror story sequence */
+.boulder-horror{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 20%,#32151c 0,#10090e 48%,#020204 100%);color:#f6e9e9;overflow:auto}
+.boulder-horror[hidden]{display:none!important}
+.boulder-horror:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#ff334008 0 1px,transparent 1px 4px);animation:horror-flicker 5s infinite}
+.boulder-story-card{position:relative;width:min(720px,100%);max-height:90dvh;overflow:auto;padding:clamp(22px,5vw,42px);border:1px solid #71313d;border-radius:16px;background:linear-gradient(145deg,#180e13f5,#08070bf7);box-shadow:0 0 55px #b0002530, inset 0 0 45px #4d0d171a}
+.boulder-story-kicker{color:#ff7187;font-size:11px;letter-spacing:3px;text-transform:uppercase}
+.boulder-story-card h2{font:clamp(28px,6vw,44px)/1.05 "Luckiest Guy",cursive;letter-spacing:1px;margin:12px 0;color:#fff0f1}
+.boulder-story-chapter{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#d27a89;margin-bottom:18px}
+.boulder-story-text{font-size:clamp(16px,2.7vw,19px);line-height:1.8;color:#e7d6db;white-space:pre-line;min-height:190px}
+.boulder-story-controls{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.boulder-story-controls button{flex:1;min-width:130px;background:#5b1826;color:#fff;border:1px solid #a63c50}
+.boulder-story-controls button.secondary{background:#171016;color:#d8c3c9;border-color:#50303a}
+.boulder-story-progress{height:3px;background:#352027;margin-top:18px;border-radius:9px;overflow:hidden}
+.boulder-story-progress span{display:block;height:100%;background:#ff536e;transition:width .25s ease}
+@keyframes horror-flicker{0%,94%,96%,100%{opacity:.25}95%{opacity:.8}97%{opacity:.1}}
+@media(prefers-reduced-motion:reduce){.boulder-horror:before{animation:none}.boulder-story-progress span{transition:none}}
 </style>
 </head>
 <body>
@@ -275,6 +292,20 @@ html body,html body *{font-family:"Fredoka",sans-serif!important}
 </div>
 <div class="controls game-controls"><button class="primary" id="start">Start game</button></div>
 <p class="small" id="runNote">Practice best score saves on this device. Sign in to submit scores online.</p>
+
+<div class="boulder-horror" id="boulderHorror" hidden role="dialog" aria-modal="true" aria-labelledby="boulderStoryTitle">
+  <article class="boulder-story-card">
+    <div class="boulder-story-kicker">Swiper — an unexpected ending</div>
+    <h2 id="boulderStoryTitle">THE THING IN THE DARK</h2>
+    <div class="boulder-story-chapter" id="boulderStoryChapter">Chapter 1 of 12</div>
+    <div class="boulder-story-text" id="boulderStoryText"></div>
+    <div class="boulder-story-progress"><span id="boulderStoryProgress" style="width:8.33%"></span></div>
+    <div class="boulder-story-controls">
+      <button type="button" id="boulderStoryNext">Continue</button>
+      <button type="button" class="secondary" id="boulderStoryExit">Leave story</button>
+    </div>
+  </article>
+</div>
 </main><aside style="display:grid;gap:15px;align-content:start">
 <section class="panel" id="accountPanel"><button class="secondary nav-back" data-back>← Main menu</button><div class="sectionhead"><h2>Player account</h2><span class="small" id="authBadge">Guest</span></div>
 <div id="signedOut"><div class="field" id="createUsernameField"><label for="username">Username <span class="small">(create account only)</span></label><input id="username" maxlength="20" autocomplete="username" placeholder="Choose a username"></div><div class="field"><label for="email">Email or username</label><input id="email" type="text" autocomplete="username" placeholder="Email or username (sign in)"></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div><div class="authbuttons"><button class="primary" id="signup">Create account</button><button class="secondary" id="login">Sign in</button></div><label class="policy-consent"><input id="policyAgree" type="checkbox"><span>By creating an account, you agree to Google’s <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>.</span></label><button class="link" id="reset">Forgot password?</button></div>
@@ -344,7 +375,53 @@ objects=objects.filter(o=>{if(o.x < -35){o.el.remove();return false}return true}
 if(mode==="bot"){const reaction=({easy:.65,normal:.78,hard:.88,expert:.95,impossible:.99}[difficulty]);const danger=objects.find(o=>o.lane===botLane&&o.x<w*.36+105&&o.x>w*.36+28);if(danger&&Math.random()<reaction)setBotLane(1-botLane);else if(!danger&&Math.random()<.005)setBotLane(1-botLane)}
 if(playerY>15&&playerY<85){if(!centerSince)centerSince=now;if(now-centerSince>1700){const rock=document.createElement("div");rock.className="boulder";arena.append(rock);setTimeout(()=>rock.remove(),450);endRun(false,"The boulder caught you! Keep moving.");return}}else centerSince=0
 raf=requestAnimationFrame(loop)}
-function endRun(botLost=false,reason=""){if(!running)return;const previousBest=best;if(mode==="bot"&&botLost)explodeCharacter(bot,"#ff405b");else explodeCharacter(player,profile?.avatar_explosion_color||"#ff405b");running=false;paused=false;cancelAnimationFrame(raf);if(songLevelMode&&songMedia)songMedia.pause();if(mode!=="bot"&&mode!=="quick"&&score>best){if(mode==="practice"&&practiceRunMoves.length){try{localStorage.setItem("swiper-best-ghost-v1",JSON.stringify(practiceRunMoves.slice(0,5000)));bestGhostMoves=practiceRunMoves.slice(0,5000)}catch(e){console.warn("Could not save personal-best ghost",e)}}best=score;localStorage.setItem(bestKey,String(best))}$("best").textContent=best;$("start").textContent="Play again";if(mode==="bot"){const result=botLost?"You won! The bot died.":"You lost! You died.";ready(result,"Your score: "+score+" Bot score: "+botScore+". "+(score>previousBest?"New personal best!":"Play another round?"))}else if(reason)ready(reason,"Your score: "+score+". Move to the upper or lower edge to avoid the boulder.");else ready("Run over","You scored "+score+". "+(score>previousBest?"New personal best!":"Try again to beat your record."));if(mode==="quick"&&matchRoomId)handleQuickRunEnd();if(mode!=="community"&&mode!=="quick")sendScore()}
+const boulderHorrorChapters=[
+["The Sound Behind You","The boulder hit the floor with a sound too deep to be stone. The arena lights blinked once. Then every light went out.
+
+In the dark, you heard something dragging itself across the ground. It was not the boulder. The boulder was still directly in front of you."],
+["A Score That Wouldn't Stop","Your score kept climbing on the dark screen, one point at a time. You had stopped moving, but the counter had not noticed.
+
+Then the numbers changed. They spelled out a time: 03:17. A small line appeared beneath it: YOU SHOULD NOT STILL BE HERE."],
+["The Empty Arena","A red emergency light flickered on. The spikes were gone. The walls seemed much farther away than they had been a moment ago, and the exit sign at the end of the arena pointed toward a solid wall.
+
+You called out. Your own voice came back from somewhere behind you, whispering the same words half a second later."],
+["The Second Player","A second runner appeared across the arena. It looked just like you, down to the colors and the tiny marks on its sides.
+
+It did not move when you moved. It only stared. Above its head, the name tag slowly appeared: STILL PLAYING."],
+["The First Rule","A message blinked onto the wall: KEEP MOVING.
+
+You took one step. The other runner took one step too, but in the wrong direction. Its head tilted as if it were listening to a sound coming from inside your chest."],
+["The Boulder Returns","A low rumble traveled through the floor. The boulder rolled out of the darkness, but now its surface was covered in faint handprints pressed into the stone from the inside.
+
+It stopped a few feet away. Something knocked three times from within it. Then a voice, thin and exhausted, said your name tag aloud."],
+["A Door in the Wall","Where the exit sign had been, a narrow door appeared. A strip of warm light shone underneath it. For the first time since the lights went out, you could hear ordinary sounds: rain, distant traffic, someone humming.
+
+The other runner shook its head. Its mouth did not move, but a whisper filled the arena: THAT IS NOT OUTSIDE."],
+["The Recording","A speaker crackled overhead. A calm voice announced that the game had ended and all players had safely left the building.
+
+Then the same voice began again, much quieter. It described the arena, the boulder, the red light—and the exact place where you were standing. It said it was reading from a recording made tomorrow."],
+["The Room Beneath","The floor split with a long wooden creak. Beneath it was another arena, older and smaller, with faded lines and a screen glowing in the corner. Dozens of little runner shapes stood perfectly still down there.
+
+Every one of them wore your name. Every one turned toward you at exactly the same moment."],
+["The Choice","The door opened a little wider. The other runner stood beside it now, close enough for you to see that its face was only a dark reflection, like a window at night.
+
+It held out one hand. The boulder waited behind you. The door waited in front. The message on the wall changed: ONE OF YOU MAY LEAVE."],
+["The Last Step","You stepped toward the door. The other runner did not follow. Instead, it stepped backward into the boulder, and the stone swallowed it without a sound.
+
+The emergency light turned white. The door opened onto a familiar screen: your game, your score, your player standing safely in the arena. Everything looked normal—except your runner was facing the wrong way."],
+["Still Here","The lights returned. The spikes came back. The game offered you another round, as if nothing had happened.
+
+But for a moment, just before the screen settled, a message appeared under your score: THANK YOU FOR TAKING MY PLACE.
+
+Far below the arena, something began to roll. Three slow knocks sounded from inside the stone. Then the screen went dark."]
+];
+let boulderHorrorIndex=0;
+function renderBoulderHorror(){const chapter=boulderHorrorChapters[boulderHorrorIndex];$("boulderStoryChapter").textContent="Chapter "+(boulderHorrorIndex+1)+" of "+boulderHorrorChapters.length+" — "+chapter[0];$("boulderStoryText").textContent=chapter[1];$("boulderStoryProgress").style.width=((boulderHorrorIndex+1)/boulderHorrorChapters.length*100)+"%";$("boulderStoryNext").textContent=boulderHorrorIndex===boulderHorrorChapters.length-1?"Finish story":"Continue";$("boulderStoryText").scrollTop=0}
+function openBoulderHorrorStory(){boulderHorrorIndex=0;renderBoulderHorror();$("boulderHorror").hidden=false;$("overlay").hidden=true;document.body.style.overflow="hidden";$("boulderStoryNext").focus()}
+function closeBoulderHorrorStory(){ $("boulderHorror").hidden=true;document.body.style.overflow="hidden";$("overlay").hidden=false}
+$("boulderStoryNext").addEventListener("click",()=>{if(boulderHorrorIndex<boulderHorrorChapters.length-1){boulderHorrorIndex++;renderBoulderHorror()}else closeBoulderHorrorStory()});
+$("boulderStoryExit").addEventListener("click",closeBoulderHorrorStory);
+function endRun(botLost=false,reason=""){if(!running)return;const previousBest=best;if(mode==="bot"&&botLost)explodeCharacter(bot,"#ff405b");else explodeCharacter(player,profile?.avatar_explosion_color||"#ff405b");running=false;paused=false;cancelAnimationFrame(raf);if(songLevelMode&&songMedia)songMedia.pause();if(mode!=="bot"&&mode!=="quick"&&score>best){if(mode==="practice"&&practiceRunMoves.length){try{localStorage.setItem("swiper-best-ghost-v1",JSON.stringify(practiceRunMoves.slice(0,5000)));bestGhostMoves=practiceRunMoves.slice(0,5000)}catch(e){console.warn("Could not save personal-best ghost",e)}}best=score;localStorage.setItem(bestKey,String(best))}$("best").textContent=best;$("start").textContent="Play again";if(mode==="bot"){const result=botLost?"You won! The bot died.":"You lost! You died.";ready(result,"Your score: "+score+" Bot score: "+botScore+". "+(score>previousBest?"New personal best!":"Play another round?"))}else if(reason)ready(reason,"Your score: "+score+". Move to the upper or lower edge to avoid the boulder.");else ready("Run over","You scored "+score+". "+(score>previousBest?"New personal best!":"Try again to beat your record."));if(reason==="The boulder caught you! Keep moving.")openBoulderHorrorStory();if(mode==="quick"&&matchRoomId)handleQuickRunEnd();if(mode!=="community"&&mode!=="quick")sendScore()}
 arena.addEventListener("pointerdown",()=>{const video=$("arenaVideo");if(!video.classList.contains("hidden")&&video.paused){video.muted=false;video.volume=1;video.play().catch(()=>{})}},{passive:true});function pauseGame(){if(running){running=false;paused=true;cancelAnimationFrame(raf);if(songLevelMode&&songMedia)songMedia.pause();$("overlayTitle").textContent="Paused";$("overlayText").textContent="Your run is waiting."; $("overlayStart").textContent="Resume";overlay.hidden=false;if($("pause"))$("pause").textContent="Resume"}else if(paused)startGame()}
 function move(direction){if(running&&!paused){setLane(direction===undefined?1-lane:(direction<0?0:1));centerSince=0}}
 let pointerStart=null;
