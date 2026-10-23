@@ -376,44 +376,18 @@ if(mode==="bot"){const reaction=({easy:.65,normal:.78,hard:.88,expert:.95,imposs
 if(playerY>15&&playerY<85){if(!centerSince)centerSince=now;if(now-centerSince>1700){const rock=document.createElement("div");rock.className="boulder";arena.append(rock);setTimeout(()=>rock.remove(),450);endRun(false,"The boulder caught you! Keep moving.");return}}else centerSince=0
 raf=requestAnimationFrame(loop)}
 const boulderHorrorChapters=[
-["The Sound Behind You","The boulder hit the floor with a sound too deep to be stone. The arena lights blinked once. Then every light went out.
-
-In the dark, you heard something dragging itself across the ground. It was not the boulder. The boulder was still directly in front of you."],
-["A Score That Wouldn't Stop","Your score kept climbing on the dark screen, one point at a time. You had stopped moving, but the counter had not noticed.
-
-Then the numbers changed. They spelled out a time: 03:17. A small line appeared beneath it: YOU SHOULD NOT STILL BE HERE."],
-["The Empty Arena","A red emergency light flickered on. The spikes were gone. The walls seemed much farther away than they had been a moment ago, and the exit sign at the end of the arena pointed toward a solid wall.
-
-You called out. Your own voice came back from somewhere behind you, whispering the same words half a second later."],
-["The Second Player","A second runner appeared across the arena. It looked just like you, down to the colors and the tiny marks on its sides.
-
-It did not move when you moved. It only stared. Above its head, the name tag slowly appeared: STILL PLAYING."],
-["The First Rule","A message blinked onto the wall: KEEP MOVING.
-
-You took one step. The other runner took one step too, but in the wrong direction. Its head tilted as if it were listening to a sound coming from inside your chest."],
-["The Boulder Returns","A low rumble traveled through the floor. The boulder rolled out of the darkness, but now its surface was covered in faint handprints pressed into the stone from the inside.
-
-It stopped a few feet away. Something knocked three times from within it. Then a voice, thin and exhausted, said your name tag aloud."],
-["A Door in the Wall","Where the exit sign had been, a narrow door appeared. A strip of warm light shone underneath it. For the first time since the lights went out, you could hear ordinary sounds: rain, distant traffic, someone humming.
-
-The other runner shook its head. Its mouth did not move, but a whisper filled the arena: THAT IS NOT OUTSIDE."],
-["The Recording","A speaker crackled overhead. A calm voice announced that the game had ended and all players had safely left the building.
-
-Then the same voice began again, much quieter. It described the arena, the boulder, the red light—and the exact place where you were standing. It said it was reading from a recording made tomorrow."],
-["The Room Beneath","The floor split with a long wooden creak. Beneath it was another arena, older and smaller, with faded lines and a screen glowing in the corner. Dozens of little runner shapes stood perfectly still down there.
-
-Every one of them wore your name. Every one turned toward you at exactly the same moment."],
-["The Choice","The door opened a little wider. The other runner stood beside it now, close enough for you to see that its face was only a dark reflection, like a window at night.
-
-It held out one hand. The boulder waited behind you. The door waited in front. The message on the wall changed: ONE OF YOU MAY LEAVE."],
-["The Last Step","You stepped toward the door. The other runner did not follow. Instead, it stepped backward into the boulder, and the stone swallowed it without a sound.
-
-The emergency light turned white. The door opened onto a familiar screen: your game, your score, your player standing safely in the arena. Everything looked normal—except your runner was facing the wrong way."],
-["Still Here","The lights returned. The spikes came back. The game offered you another round, as if nothing had happened.
-
-But for a moment, just before the screen settled, a message appeared under your score: THANK YOU FOR TAKING MY PLACE.
-
-Far below the arena, something began to roll. Three slow knocks sounded from inside the stone. Then the screen went dark."]
+["The Sound Behind You","The boulder hit the floor with a sound too deep to be stone. The arena lights blinked once. Then every light went out.\n\nIn the dark, you heard something dragging itself across the ground. It was not the boulder. The boulder was still directly in front of you."],
+["A Score That Wouldn't Stop","Your score kept climbing on the dark screen, one point at a time. You had stopped moving, but the counter had not noticed.\n\nThen the numbers changed. They spelled out a time: 03:17. A small line appeared beneath it: YOU SHOULD NOT STILL BE HERE."],
+["The Empty Arena","A red emergency light flickered on. The spikes were gone. The walls seemed much farther away than they had been a moment ago, and the exit sign at the end of the arena pointed toward a solid wall.\n\nYou called out. Your own voice came back from somewhere behind you, whispering the same words half a second later."],
+["The Second Player","A second runner appeared across the arena. It looked just like you, down to the colors and the tiny marks on its sides.\n\nIt did not move when you moved. It only stared. Above its head, the name tag slowly appeared: STILL PLAYING."],
+["The First Rule","A message blinked onto the wall: KEEP MOVING.\n\nYou took one step. The other runner took one step too, but in the wrong direction. Its head tilted as if it were listening to a sound coming from inside your chest."],
+["The Boulder Returns","A low rumble traveled through the floor. The boulder rolled out of the darkness, but now its surface was covered in faint handprints pressed into the stone from the inside.\n\nIt stopped a few feet away. Something knocked three times from within it. Then a voice, thin and exhausted, said your name tag aloud."],
+["A Door in the Wall","Where the exit sign had been, a narrow door appeared. A strip of warm light shone underneath it. For the first time since the lights went out, you could hear ordinary sounds: rain, distant traffic, someone humming.\n\nThe other runner shook its head. Its mouth did not move, but a whisper filled the arena: THAT IS NOT OUTSIDE."],
+["The Recording","A speaker crackled overhead. A calm voice announced that the game had ended and all players had safely left the building.\n\nThen the same voice began again, much quieter. It described the arena, the boulder, the red light—and the exact place where you were standing. It said it was reading from a recording made tomorrow."],
+["The Room Beneath","The floor split with a long wooden creak. Beneath it was another arena, older and smaller, with faded lines and a screen glowing in the corner. Dozens of little runner shapes stood perfectly still down there.\n\nEvery one of them wore your name. Every one turned toward you at exactly the same moment."],
+["The Choice","The door opened a little wider. The other runner stood beside it now, close enough for you to see that its face was only a dark reflection, like a window at night.\n\nIt held out one hand. The boulder waited behind you. The door waited in front. The message on the wall changed: ONE OF YOU MAY LEAVE."],
+["The Last Step","You stepped toward the door. The other runner did not follow. Instead, it stepped backward into the boulder, and the stone swallowed it without a sound.\n\nThe emergency light turned white. The door opened onto a familiar screen: your game, your score, your player standing safely in the arena. Everything looked normal—except your runner was facing the wrong way."],
+["Still Here","The lights returned. The spikes came back. The game offered you another round, as if nothing had happened.\n\nBut for a moment, just before the screen settled, a message appeared under your score: THANK YOU FOR TAKING MY PLACE.\n\nFar below the arena, something began to roll. Three slow knocks sounded from inside the stone. Then the screen went dark."]
 ];
 let boulderHorrorIndex=0;
 function renderBoulderHorror(){const chapter=boulderHorrorChapters[boulderHorrorIndex];$("boulderStoryChapter").textContent="Chapter "+(boulderHorrorIndex+1)+" of "+boulderHorrorChapters.length+" — "+chapter[0];$("boulderStoryText").textContent=chapter[1];$("boulderStoryProgress").style.width=((boulderHorrorIndex+1)/boulderHorrorChapters.length*100)+"%";$("boulderStoryNext").textContent=boulderHorrorIndex===boulderHorrorChapters.length-1?"Finish story":"Continue";$("boulderStoryText").scrollTop=0}
